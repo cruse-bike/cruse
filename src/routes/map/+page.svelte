@@ -19,10 +19,24 @@ url={'pmtiles://https://r2-public.protomaps.com/protomaps-sample-datasets/cb_201
     'line-color': 'rgb(53, 175, 109)',
     'line-width': 2,
   }}
+  sourceLayer='zcta'
+/>
+<VectorTileSource
+url={'pmtiles://rnet_limerick.pmtiles'}
+>
+
+</VectorTileSource>
+<LineLayer
+  paint={{
+    'line-opacity': 0.6,
+    'line-color': 'rgb(53, 175, 109)',
+    'line-width': 2,
+  }}
   sourceLayer={'zcta'}
 />
 </VectorTileSource>
 </MapLibre>    
+
 
 
 
