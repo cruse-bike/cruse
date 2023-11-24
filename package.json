@@ -28,6 +28,7 @@
     "svelte": "^5.0.0-next.1",
     "svelte-adapter-bun": "^0.5.1",
     "svelte-check": "^3.6.0",
+    "svelte-maplibre": "^0.7.3",
     "typescript": "^5.0.0",
     "vite": "^4.4.2",
     "vitest": "^0.32.2"
