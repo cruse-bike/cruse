@@ -3,8 +3,8 @@
   </script>
   
   <MapLibre 
-    center={[50,20]}
-    zoom={7}
+    center={[-8.63,52.66]}
+    zoom={11}
     class="map"
     standardControls
     style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json" />
