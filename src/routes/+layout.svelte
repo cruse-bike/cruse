@@ -1,3 +1,4 @@
+export const prerender = true;
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
