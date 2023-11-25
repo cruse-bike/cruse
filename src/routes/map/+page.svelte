@@ -9,19 +9,20 @@
 	standardControls
 	style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
 >
-	<VectorTileSource
-		url={'pmtiles://https://r2-public.protomaps.com/protomaps-sample-datasets/cb_2018_us_zcta510_500k.pmtiles'}
-	>
-		<LineLayer
-			paint={{
-				'line-opacity': 0.6,
-				'line-color': 'rgb(53, 175, 109)',
-				'line-width': 2
-			}}
-			sourceLayer="zcta"
-		></LineLayer>
-	</VectorTileSource>
+    <VectorTileSource
+        url={'pmtiles://rnet_limerick.pmtiles'}
+    >
+        <LineLayer
+            paint={{
+                'line-opacity': 0.6,
+                'line-color': 'rgb(53, 175, 109)',
+                'line-width': 2
+            }}
+            sourceLayer="rnet_limerick"
+        ></LineLayer>
+    </VectorTileSource>
 </MapLibre>
+
 
 <style>
 	:global(.map) {
