@@ -13,5 +13,8 @@
     "gh-pages": "^6.1.0",
     "svelte": "^4.2.5",
     "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "svelte-maplibre": "^0.7.3"
   }
 }
