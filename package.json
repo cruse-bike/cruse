@@ -8,14 +8,15 @@
     "deploy": "gh-pages -d build -t true"
   },
   "devDependencies": {
-    "@sveltejs/kit": "^1.27.6",
     "@sveltejs/adapter-static": "^2.0.3",
+    "@sveltejs/kit": "^1.27.6",
     "gh-pages": "^6.1.0",
     "svelte": "^4.2.5",
     "vite": "^5.0.2"
   },
   "dependencies": {
     "@maptiler/geocoding-control": "^1.0.0",
+    "mapbox-gl-geocoder": "^2.0.1",
     "svelte-maplibre": "^0.7.3"
   }
 }
