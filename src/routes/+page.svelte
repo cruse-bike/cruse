@@ -4,8 +4,9 @@
   // Add geocoder:
   import GeocodingControl from "@maptiler/geocoding-control/svelte/GeocodingControl.svelte";
   import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl";
+  import maplibregl, { Map, NavigationControl } from 'maplibre-gl';
   // Add your API key:
-  const apiKey = 'lRY4JMbysup3srAsB86g';
+  const apiKey = 'test';
 </script>
 
 <h1>sveltekit-gh-pages</h1>
