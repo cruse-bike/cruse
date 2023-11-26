@@ -3,6 +3,7 @@
   import { MapLibre, VectorTileSource, LineLayer } from 'svelte-maplibre';
   // Add geocoder:
   import GeocodingControl from "@maptiler/geocoding-control/svelte/GeocodingControl.svelte";
+  const apiKey = 'api-key';
 </script>
 
 <h1>sveltekit-gh-pages</h1>
@@ -30,7 +31,7 @@
             sourceLayer="rnet_limerick"
         ></LineLayer>
     </VectorTileSource>
-    <GeocodingControl />
+    <GeocodingControl {apiKey} />
 </MapLibre>
 
 <style>
