@@ -1,34 +1,30 @@
-<script lang="ts">
-    import GeocodingControl from "@maptiler/geocoding-control/svelte/GeocodingControl.svelte";
-    import type { MapController } from "@maptiler/geocoding-control/types";
-    import maplibregl from "maplibre-gl";
-    import { map } from "stores";
-    import { onMount } from "svelte";
-  
-    // TODO The position for the sketch page is very awkward, but there's
-    // seemingly no option to make the menu appear above the widget
-    export let position: "top-left" | "top-right" = "top-left";
-  
-    let mapController: MapController;
-  
-    // TODO HMR is broken
-    onMount(() => {
-      mapController = createMapLibreGlMapController($map, maplibregl);
+<script>
+  import { map } from "stores";
+  import { onMount } from "svelte";
+  import GeocodingControl from "@maptiler/geocoding-control";
+
+  let position = "top-left";
+  let mapController = null;
+
+  onMount(() => {
+    mapController = new GeocodingControl({
+      apiKey: import.meta.env.VITE_MAPTILER_API_KEY,
+      onResult: function(result) {
+        console.log(result);
+      }
     });
-  
-    // TODO Show markers
-    // TODO Set the flyTo duration
-  </script>
-  
-  {#if mapController}
-    <div class={position}>
-      <GeocodingControl
-        {mapController}
-        apiKey={import.meta.env.VITE_MAPTILER_API_KEY}
-        country="gb"
-      />
-    </div>
-  {/if}
+    $map.addControl(mapController, position);
+  });
+</script>
+
+{#if mapController}
+  <div class={position}>
+    <GeocodingControl
+      apiKey={import.meta.env.VITE_MAPTILER_API_KEY}
+      country="gb"
+    />
+  </div>
+{/if}
   
   <style>
     .top-left {
