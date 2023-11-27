@@ -2,9 +2,10 @@
   import { base } from "$app/paths";
   import { MapLibre, VectorTileSource, LineLayer } from 'svelte-maplibre';
   // Add geocoder:
-  import GeocodingControl from "@maptiler/geocoding-control/svelte/GeocodingControl.svelte";
-  import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl";
-  import maplibregl, { Map, NavigationControl } from 'maplibre-gl';
+  import Geocoder from "$lib/common/Geocoder.svelte";
+//   import GeocodingControl from "@maptiler/geocoding-control/svelte/GeocodingControl.svelte";
+//   import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl";
+//   import maplibregl, { Map, NavigationControl } from 'maplibre-gl';
   // Add your API key:
   const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 </script>
@@ -35,16 +36,7 @@
             sourceLayer="rnet_limerick"
         ></LineLayer>
     </VectorTileSource>
-    <GeocodingControl
-        apiKey={apiKey}
-        position="top-left"
-        placeholder="Search for a place"
-        limit={5}
-        language="en"
-        onselect={(event) => {
-            console.log(event.detail);
-        }}
-    />
+    <Geocoder />
 </MapLibre>
 
 <style>
