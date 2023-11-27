@@ -10,17 +10,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-        # steps:
-      - name: Use Node.js 12
-        uses: actions/setup-node@v4
+      - name: Set Node.js 20
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
-
-
+          node-version: 20
 
     # Install yarn + dependencies
       - name: Install Yarn 🧶
-        uses: Borales/actions-yarn@v2.0.0
+        uses: Borales/actions-yarn@v4
         with:
           cmd: install
       
