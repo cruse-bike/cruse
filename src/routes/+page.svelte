@@ -6,7 +6,7 @@
   import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl";
   import maplibregl, { Map, NavigationControl } from 'maplibre-gl';
   // Add your API key:
-  const apiKey = 'lRY4JMbysup3srAsB86g';
+  const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 </script>
 
 <h1>sveltekit-gh-pages</h1>
