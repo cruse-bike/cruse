@@ -1,13 +1,26 @@
 <script>
   import { base } from "$app/paths";
   import { MapLibre, VectorTileSource, LineLayer } from 'svelte-maplibre';
-  // Add geocoder:
-  import Geocoder from "$lib/common/Geocoder.svelte";
-//   import GeocodingControl from "@maptiler/geocoding-control/svelte/GeocodingControl.svelte";
-//   import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl";
-//   import maplibregl, { Map, NavigationControl } from 'maplibre-gl';
-  // Add your API key:
-  const apiKey = 'EU1qfgGypy2AfZTKCG6c';
+  import { onMount } from 'svelte';
+  import GeocodingControl from "@maptiler/geocoding-control/GeocodingControl.svelte";
+  import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl";
+  import maplibregl from "maplibre-gl";
+  import "maplibre-gl/dist/maplibre-gl.css";
+
+  const apiKey = 'EU1qfgGypy2AfZTKCG6c'; // replace with your actual API key
+  let mapController = null;
+  let container;
+
+  onMount(() => {
+    const map = new maplibregl.Map({
+      container: container,
+      style: `https://api.maptiler.com/maps/streets/style.json?key=${apiKey}`,
+      center: [-8.63, 52.66],
+      zoom: 11
+    });
+
+    mapController = createMapLibreGlMapController(map, maplibregl);
+  });
 </script>
 
 <h1>sveltekit-gh-pages</h1>
@@ -15,6 +28,12 @@
 <p>
   Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
 </p>
+
+<div class="map" bind:this={container} />
+
+{#if mapController}
+  <GeocodingControl {mapController} apiKey={apiKey} />
+{/if}
 
 <MapLibre
   apiKey={apiKey}
