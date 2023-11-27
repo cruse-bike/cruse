@@ -25,7 +25,7 @@
 	style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
 >
     <VectorTileSource
-        url={'pmtiles://rnet_limerick.pmtiles'}
+        url={'pmtiles://https://nptscot.blob.core.windows.net/pmtiles/rnet_limerick.pmtiles'}
     >
         <LineLayer
             paint={{
