@@ -10,18 +10,19 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-    # Install yarn + dependencies
-      - name: Install Yarn 🧶
-        uses: Borales/actions-yarn@v2.0.0
-        with:
-          cmd: install
-      
       - name: Install Node.js
         uses: actions/setup-node@v2-beta
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+
+    # Install yarn + dependencies
+      - name: Install Yarn 🧶
+        uses: Borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+      
       - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
           yarn install
