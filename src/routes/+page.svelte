@@ -1,12 +1,6 @@
 <script>
   import { base } from "$app/paths";
-  import { MapLibre, VectorTileSource, LineLayer, Popup } from 'svelte-maplibre';
-  // Add geocoder:
-  import GeocodingControl from "@maptiler/geocoding-control/svelte/GeocodingControl.svelte";
-  import { createMapLibreGlMapController } from "@maptiler/geocoding-control/maplibregl";
-  import maplibregl, { Map, NavigationControl } from 'maplibre-gl';
-	import { get } from "svelte/store";
-  // Add your API key:
+  import { MapLibre, VectorTileSource, LineLayer, Popup, ControlGroup, Control, ControlButton} from 'svelte-maplibre';
   const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 </script>
 
@@ -23,7 +17,44 @@
 	class="map"
 	standardControls
 	style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
->
+    let:map
+>   
+<Control class="flex flex-col gap-y-2">
+    <ControlGroup>
+      <ControlButton
+        on:click={() => {
+          map.flyTo({
+            center: [-5, 54],
+            zoom: 4,
+          });
+        }}
+      >
+        UK
+      </ControlButton>
+      <ControlButton
+        on:click={() =>
+          map.fitBounds([
+            [-120, 50],
+            [-70, 20],
+          ])}
+      >
+        US
+      </ControlButton>
+      <ControlButton
+        on:click={() =>
+          map.fitBounds([
+            [110, 20],
+            [140, 0],
+          ])}
+      >
+        PH
+      </ControlButton>
+    </ControlGroup>
+
+    <ControlGroup>
+      <ControlButton on:click={() => alert('!')}>!</ControlButton>
+    </ControlGroup>
+  </Control>
     <VectorTileSource
         url={'pmtiles://rnet_limerick.pmtiles'}
     >
@@ -52,16 +83,6 @@
         </Popup>
         </LineLayer>
     </VectorTileSource>
-    <GeocodingControl
-        apiKey={apiKey}
-        position="top-left"
-        placeholder="Search for a place"
-        limit={5}
-        language="en"
-        onselect={(event) => {
-            console.log(event.detail);
-        }}
-    />
 </MapLibre>
 
 <style>
