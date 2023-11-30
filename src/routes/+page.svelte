@@ -27,7 +27,8 @@
 	<GeocodingControl
 		{apiKey}
 		on:select={(e) => {
-			map.flyTo({
+			if (!e.detail?.center) return;
+ 			map.flyTo({
 				center: e.detail.center,
 				zoom: 10
 			});
