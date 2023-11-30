@@ -6,18 +6,17 @@
 		LineLayer,
 		Popup,
         GeolocateControl,
-		NavigationControl
+		NavigationControl,
+
+		FullscreenControl
+
 
 	} from 'svelte-maplibre';
 	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
 	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 </script>
 
-<h1>sveltekit-gh-pages</h1>
-<p>Deployed to GitHub Pages</p>
-<p>
-	Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
-</p>
+<!-- <h1>CRUSE test map</h1> -->
 
 <MapLibre
 	{apiKey}
@@ -41,6 +40,7 @@
     <!-- <Control position="top-right"/> -->
     <NavigationControl position="top-right"/>
     <GeolocateControl position="top-right"/>
+    <FullscreenControl position="top-right"/>
 
 
 	<VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}>
