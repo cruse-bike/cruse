@@ -35,6 +35,7 @@
 				zoom: 10
 			});
 		}}
+		class="geoCodeControl"
 	/>
 
     <!-- <Control position="top-right"/> -->
@@ -77,5 +78,9 @@
 <style>
 	:global(.map) {
 		height: 500px;
+	}
+
+	:global(.geoCodeControl) {
+		margin: 10px 15px;
 	}
 </style>
