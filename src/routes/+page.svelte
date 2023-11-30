@@ -32,6 +32,7 @@
 				zoom: 10
 			});
 		}}
+		class="geoCodeControl"
 	/>
 
 	<!-- <Control position="top-right"/> -->
@@ -80,6 +81,8 @@
 		height: 500px;
 	}
 
+	:global(.geoCodeControl) {
+		margin: 10px 15px;
 	.popUpKey {
 		color: #444
 	}
