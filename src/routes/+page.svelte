@@ -4,7 +4,10 @@
 		MapLibre,
 		VectorTileSource,
 		LineLayer,
-		Popup
+		Popup,
+        GeolocateControl,
+		NavigationControl
+
 	} from 'svelte-maplibre';
 	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
 	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
@@ -21,7 +24,7 @@
 	center={[-8.63, 52.66]}
 	zoom={11}
 	class="map"
-	standardControls
+    controlPosition="top-right"
 	style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
 	let:map
 >
@@ -34,6 +37,11 @@
 			});
 		}}
 	/>
+
+    <!-- <Control position="top-right"/> -->
+    <NavigationControl position="top-right"/>
+    <GeolocateControl position="top-right"/>
+
 
 	<VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}>
 		<LineLayer
