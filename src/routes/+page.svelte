@@ -5,12 +5,9 @@
 		VectorTileSource,
 		LineLayer,
 		Popup,
-        GeolocateControl,
+		GeolocateControl,
 		NavigationControl,
-
 		FullscreenControl
-
-
 	} from 'svelte-maplibre';
 	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
 	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
@@ -23,7 +20,7 @@
 	center={[-8.63, 52.66]}
 	zoom={11}
 	class="map"
-    controlPosition="top-right"
+	controlPosition="top-right"
 	style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
 	let:map
 >
@@ -38,11 +35,10 @@
 		class="geoCodeControl"
 	/>
 
-    <!-- <Control position="top-right"/> -->
-    <NavigationControl position="top-right"/>
-    <GeolocateControl position="top-right"/>
-    <FullscreenControl position="top-right"/>
-
+	<!-- <Control position="top-right"/> -->
+	<NavigationControl position="top-right" />
+	<GeolocateControl position="top-right" />
+	<FullscreenControl position="top-right" />
 
 	<VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}>
 		<LineLayer
@@ -66,8 +62,13 @@
 			sourceLayer="rnet_limerick"
 			hoverCursor="pointer"
 		>
-			<Popup openOn="click" offset={[0, -10]}>
-				<div class="text-lg font-bold">"Test value"</div>
+			<Popup openOn="click" offset={[0, -10]} let:features>
+				{@const props = features?.[0]?.properties}
+				{#each Object.entries(props) as [key, val]}
+					<p>
+						<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
+					</p>
+				{/each}
 			</Popup>
 		</LineLayer>
 	</VectorTileSource>
@@ -82,5 +83,10 @@
 
 	:global(.geoCodeControl) {
 		margin: 10px 15px;
+	.popUpKey {
+		color: #444
+	}
+	.popUpVal {
+		font-weight: 600;
 	}
 </style>
