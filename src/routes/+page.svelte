@@ -83,6 +83,7 @@
 
 	:global(.geoCodeControl) {
 		margin: 10px 15px;
+    }
 	.popUpKey {
 		color: #444
 	}
