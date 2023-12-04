@@ -1,0 +1,33 @@
+---
+format: gfm
+title: "Generating pmtiles"
+---
+
+
+```{r}
+#| eval: false
+#| echo: false
+list.files("~/github/itsleeds/atumie/outputs/2023-07-21/pub/limerick/")
+file.copy("~/github/itsleeds/atumie/outputs/2023-07-21/pub/limerick/rnet_combined_balanced.gpkg", ".")
+```
+
+```{r}
+#| eval: false
+rnet_combined = sf::read_sf("rnet_combined_balanced.gpkg")
+sf::write_sf(rnet_combined, "rnet_combined_balanced.geojson")
+```
+
+
+
+```bash
+tippecanoe -o rnet_limerick.pmtiles -zg rnet_combined_balanced.geojson --force
+ls -l rnet_limerick.pmtiles
+```
+
+```{r}
+fs::file_size("rnet_limerick.pmtiles")
+```
+
+```bash
+yarn dev
+```
