@@ -60,7 +60,7 @@
 				],
 				'line-width': 2
 			}}
-			sourceLayer="rnet_combined_balanced"
+			sourceLayer="rnet_limerick"
 			hoverCursor="pointer"
 		>
 			<Popup openOn="click" offset={[0, -10]} let:features>

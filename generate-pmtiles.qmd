@@ -14,7 +14,13 @@ file.copy("~/github/itsleeds/atumie/outputs/2023-07-21/pub/limerick/rnet_combine
 ```{r}
 #| eval: false
 rnet_combined = sf::read_sf("rnet_combined_balanced.gpkg")
-sf::write_sf(rnet_combined, "rnet_combined_balanced.geojson")
+# Convert cols 1 to 7 to numeric:
+for (i in 1:7) {
+  rnet_combined[[i]] = as.numeric(rnet_combined[[i]])
+  # replace NAs with 3
+  rnet_combined[[i]][is.na(rnet_combined[[i]])] = 3
+}
+sf::write_sf(rnet_combined, "rnet_limerick.geojson", delete_dsn = TRUE)
 ```
 
 
@@ -26,6 +32,7 @@ ls -l rnet_limerick.pmtiles
 
 ```{r}
 fs::file_size("rnet_limerick.pmtiles")
+file.rename("rnet_limerick.pmtiles", "static/rnet_limerick.pmtiles")
 ```
 
 ```bash
