@@ -1,5 +1,6 @@
 <script>
 	import { base } from '$app/paths';
+	import LayerSelector from '$lib/LayerSelector.svelte';
 	import {
 		MapLibre,
 		VectorTileSource,
@@ -11,9 +12,19 @@
 	} from 'svelte-maplibre';
 	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
 	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
+
+	let layersVisibility = { rnet_limerick: true, another_layer: true }; // replace with your actual layers
+
+	function handleLayerChange(event) {
+		const { layer, visible } = event.detail;
+		layersVisibility[layer] = visible;
+		console.log(layersVisibility);
+	}
 </script>
 
 <!-- <h1>CRUSE test map</h1> -->
+
+<LayerSelector on:layerChange={handleLayerChange} />
 
 <MapLibre
 	{apiKey}
@@ -28,7 +39,7 @@
 		{apiKey}
 		on:select={(e) => {
 			if (!e.detail?.center) return;
- 			map.flyTo({
+			map.flyTo({
 				center: e.detail.center,
 				zoom: 10
 			});
@@ -42,36 +53,34 @@
 	<FullscreenControl position="top-right" />
 
 	<VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}>
-		<LineLayer
-			paint={{
-				'line-opacity': 0.6,
-				// Style based on value of 'Bicycle (Go Dutch)' field
-				// With breaks at 0, 10, 100, 1000:
-				'line-color': [
-					'step',
-					['get', 'Bicycle (Go Dutch)'],
-					'#f2f12d',
-					10,
-					'#e6b71e',
-					100,
-					'#d84e11',
-					1000,
-					'#bf1d00'
-				],
-				'line-width': 2
-			}}
-			sourceLayer="rnet_limerick"
-			hoverCursor="pointer"
-		>
-			<Popup openOn="click" offset={[0, -10]} let:features>
-				{@const props = features?.[0]?.properties}
-				{#each Object.entries(props) as [key, val]}
-					<p>
-						<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
-					</p>
-				{/each}
-			</Popup>
-		</LineLayer>
+		{#if layersVisibility['rnet_limerick']}
+			<LineLayer
+				id="rnet_limerick"
+				paint={{
+					'line-color': [
+						'interpolate',
+						['linear'],
+						['get', 'Bicycle (Go Dutch)'],
+						10,
+						'#ADD8E6',
+						1000,
+						'#006400'
+					],
+					'line-width': 2
+				}}
+				sourceLayer="rnet_limerick"
+				hoverCursor="pointer"
+			>
+				<Popup openOn="click" offset={[0, -10]} let:features>
+					{@const props = features?.[0]?.properties}
+					{#each Object.entries(props) as [key, val]}
+						<p>
+							<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
+						</p>
+					{/each}
+				</Popup>
+			</LineLayer>
+		{/if}
 	</VectorTileSource>
 </MapLibre>
 
@@ -84,9 +93,9 @@
 
 	:global(.geoCodeControl) {
 		margin: 10px 15px;
-    }
+	}
 	.popUpKey {
-		color: #444
+		color: #444;
 	}
 	.popUpVal {
 		font-weight: 600;
