@@ -52,10 +52,11 @@
 	<GeolocateControl position="top-right" />
 	<FullscreenControl position="top-right" />
 
-	<VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}>
+	<!-- <VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}> -->
+	<VectorTileSource url={'pmtiles://rnet-simplified-2023-11-11.pmtiles'}>
 		{#if layersVisibility['rnet_limerick']}
 			<LineLayer
-				id="rnet_limerick"
+				id="rnet"
 				paint={{
 					'line-color': [
 						'interpolate',
