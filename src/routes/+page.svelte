@@ -109,7 +109,21 @@
 							'#000000'
 						],
 						'line-width': 2
-				  }
+				  } : selectedLayer === 'Gradient' ? {
+            'line-color': [
+            'case',
+            ['<=', ['to-number', ['get', 'Gradient']], 1],
+            '#8BC34A', // Light Green
+            ['<=', ['to-number', ['get', 'Gradient']], 3],
+            '#CDDC39', // Lime
+            ['<=', ['to-number', ['get', 'Gradient']], 20],
+            '#FFA500', // Lighter Orange
+            ['>=', ['to-number', ['get', 'Gradient']], 20],
+            '#FF9800',
+            '#000000'
+        ],
+            'line-width': 2
+          }
 				: {
 						'line-color': [
 							'interpolate',
