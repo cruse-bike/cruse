@@ -49,7 +49,6 @@
 <!-- <h1>CRUSE test map</h1> -->
 
 <div class="layer-selector">
-	<h2>Select Layers</h2>
 	{#each Object.keys(keyMap) as displayName (displayName)}
 		<label>
 			<input
@@ -167,4 +166,10 @@
 	.popUpVal {
 		font-weight: 600;
 	}
+
+  /* Set the font to Google's prompt */
+  @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
+  :global(body) {
+    font-family: 'Prompt', sans-serif;
+  }
 </style>
