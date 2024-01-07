@@ -1,30 +1,63 @@
 <script>
-	import { base } from '$app/paths';
-	import LayerSelector from '$lib/LayerSelector.svelte';
-	import {
-		MapLibre,
-		VectorTileSource,
-		LineLayer,
-		Popup,
-		GeolocateControl,
-		NavigationControl,
-		FullscreenControl
-	} from 'svelte-maplibre';
-	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
-	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
+    import { base } from '$app/paths';
+    import {
+        MapLibre,
+        VectorTileSource,
+        LineLayer,
+        Popup,
+        GeolocateControl,
+        NavigationControl,
+        FullscreenControl
+    } from 'svelte-maplibre';
+    import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
+    const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 
-	let layersVisibility = { rnet_limerick: true, another_layer: true }; // replace with your actual layers
+    let layersVisibility = { rnet_limerick: true, another_layer: true }; // replace with your actual layers
 
 	function handleLayerChange(event) {
-		const { layer, visible } = event.detail;
-		layersVisibility[layer] = visible;
-		console.log(layersVisibility);
-	}
+    const { layer } = event.detail;
+    selectedLayer = layer; // Update selectedLayer when the layer changes
+    console.log('Selected layer:', selectedLayer); // Log the value of selectedLayer
+    console.log(layersVisibility);
+  }
+
+
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher();
+
+  let keyMap = {
+    'Baseline': 'Bicycle (Baseline)',
+    'Near market': 'Bicycle (Near market)',
+    'Climate Action Plan': 'Bicycle (Climate Action Plan)',
+    'Go Dutch': 'Bicycle (Go Dutch)',
+    'Ebike': 'Bicycle (Ebike)',
+    'Gradient': 'Gradient',
+    'Quietness': 'Quietness'
+  };
+
+  let selectedKey = 'Go Dutch'; // Initialize selectedKey to 'Go Dutch'
+  let selectedLayer = keyMap[selectedKey]; // Initialize selectedLayer to the corresponding value in keyMap
+
+  function toggleLayer(layerKey) {
+    selectedKey = layerKey; // Update selectedKey
+    selectedLayer = keyMap[layerKey]; // Update selectedLayer
+
+    // Emit layerChange event
+    dispatch('layerChange', { layer: selectedLayer });
+  }
 </script>
 
 <!-- <h1>CRUSE test map</h1> -->
 
-<LayerSelector on:layerChange={handleLayerChange} />
+<div class="layer-selector">
+	<h2>Select Layers</h2>
+	{#each Object.keys(keyMap) as displayName (displayName)}
+	  <label>
+		<input type="radio" bind:group={selectedKey} value={displayName} on:change={() => toggleLayer(displayName)}>
+		{displayName}
+	  </label>
+	{/each}
+  </div>
 
 <MapLibre
 	{apiKey}
@@ -53,36 +86,34 @@
 	<FullscreenControl position="top-right" />
 
 	<!-- <VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}> -->
-	<VectorTileSource url={'pmtiles://rnet-simplified-2023-11-11.pmtiles'}>
-		{#if layersVisibility['rnet_limerick']}
-			<LineLayer
-				id="rnet"
-				paint={{
-					'line-color': [
-						'interpolate',
-						['linear'],
-						['get', 'Bicycle (Go Dutch)'],
-						10,
-						'#ADD8E6',
-						1000,
-						'#006400'
-					],
-					'line-width': 2
-				}}
-				sourceLayer="rnet_limerick"
-				hoverCursor="pointer"
-			>
-				<Popup openOn="click" offset={[0, -10]} let:features>
-					{@const props = features?.[0]?.properties}
-					{#each Object.entries(props) as [key, val]}
-						<p>
-							<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
-						</p>
-					{/each}
-				</Popup>
-			</LineLayer>
-		{/if}
-	</VectorTileSource>
+	
+    <VectorTileSource url={'pmtiles://rnet_multi_balanced.pmtiles'}>
+            <LineLayer
+                id="rnet"
+                paint={{
+                    'line-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', selectedLayer], // Use selectedLayer here
+                        10,
+                        '#ADD8E6',
+                        1000,
+                        '#006400'
+                    ],
+                    'line-width': 2
+                }}
+                sourceLayer="rnet"
+                hoverCursor="pointer"
+            >
+			<Popup openOn="click" offset={[0, -10]} let:features>
+				{@const props = features?.[0]?.properties}
+				{#each Object.entries(props) as [key, val]}
+					<p>
+						<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
+					</p>
+				{/each}
+			</Popup>            </LineLayer>
+    </VectorTileSource>
 </MapLibre>
 
 <a href="{base}/about">About</a>
