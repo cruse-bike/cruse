@@ -90,18 +90,32 @@
     <VectorTileSource url={'pmtiles://rnet_multi_balanced.pmtiles'}>
             <LineLayer
                 id="rnet"
-                paint={{
-                    'line-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['get', selectedLayer], // Use selectedLayer here
-                        10,
-                        '#ADD8E6',
-                        1000,
-                        '#006400'
-                    ],
-                    'line-width': 2
-                }}
+                paint={selectedLayer === 'Quietness' ? {
+      'line-color': [
+          "case",
+          ["<=", ["to-number", ["get", "Quietness"]], 25],
+          "hsl(330, 60%, 33%)",
+          ["<=", ["to-number", ["get", "Quietness"]], 50],
+          "#cc6677",
+          ["<=", ["to-number", ["get", "Quietness"]], 75],
+          "#44ab9a",
+          [">=", ["to-number", ["get", "Quietness"]], 75],
+          "hsl(140, 75%, 27%)",
+          "#000000"
+      ],
+                  'line-width': 2
+              } : {
+                  'line-color': [
+                      'interpolate',
+                      ['linear'],
+                      ['get', selectedLayer],
+                      10,
+                      '#ADD8E6',
+                      1000,
+                      '#006400'
+                  ],
+                  'line-width': 2
+              }}
                 sourceLayer="rnet"
                 hoverCursor="pointer"
             >
