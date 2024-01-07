@@ -68,13 +68,13 @@
     </select>
   </div>
 
-  <div class="network-selector">
+  <!-- <div class="network-selector">
     <select bind:value={networkType} on:change={() => changeNetworkType(networkType)}>
       {#each networkTypes as type (type)}
         <option value={type}>{type}</option>
       {/each}
     </select>
-  </div>
+  </div> -->
 </div>
 
 <MapLibre
