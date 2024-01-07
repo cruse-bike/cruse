@@ -44,22 +44,37 @@
 		// Emit layerChange event
 		dispatch('layerChange', { layer: selectedLayer });
 	}
+
+  let networkType = 'balanced'; // Initialize networkType to 'balanced'
+  const networkTypes = ['fastest', 'balanced', 'quietest']; // Define the network types
+
+  function changeNetworkType(newType) {
+    networkType = newType; // Update networkType
+
+    // Emit networkChange event
+    dispatch('networkChange', { networkType });
+  }
+
 </script>
 
 <!-- <h1>CRUSE test map</h1> -->
 
-<div class="layer-selector">
-	{#each Object.keys(keyMap) as displayName (displayName)}
-		<label>
-			<input
-				type="radio"
-				bind:group={selectedKey}
-				value={displayName}
-				on:change={() => toggleLayer(displayName)}
-			/>
-			{displayName}
-		</label>
-	{/each}
+<div class="selector-container">
+  <div class="layer-selector">
+    <select bind:value={selectedKey} on:change={() => toggleLayer(selectedKey)}>
+        {#each Object.keys(keyMap) as displayName (displayName)}
+            <option value={displayName}>{displayName}</option>
+        {/each}
+    </select>
+  </div>
+
+  <div class="network-selector">
+    <select bind:value={networkType} on:change={() => changeNetworkType(networkType)}>
+      {#each networkTypes as type (type)}
+        <option value={type}>{type}</option>
+      {/each}
+    </select>
+  </div>
 </div>
 
 <MapLibre
@@ -171,5 +186,10 @@
   @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap');
   :global(body) {
     font-family: 'Prompt', sans-serif;
+  }
+
+  .selector-container {
+    display: flex;
+    gap: 10px;
   }
 </style>
