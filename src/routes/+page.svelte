@@ -34,7 +34,7 @@
 		Quietness: 'Quietness'
 	};
 
-	let selectedKey = 'Go Dutch'; // Initialize selectedKey to 'Go Dutch'
+	let selectedKey = 'Quietness'; // Initialize selectedKey to 'Go Dutch'
 	let selectedLayer = keyMap[selectedKey]; // Initialize selectedLayer to the corresponding value in keyMap
 
 	function toggleLayer(layerKey) {
