@@ -79,8 +79,8 @@
 
 <MapLibre
 	{apiKey}
-	center={[-8.63, 52.66]}
-	zoom={11}
+  center={[-7.96, 53.42]}
+	zoom={6}
 	class="map"
 	controlPosition="top-right"
 	style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
