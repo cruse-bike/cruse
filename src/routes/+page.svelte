@@ -105,7 +105,10 @@
 
 	<!-- <VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}> -->
 
-	<VectorTileSource url={'pmtiles://rnet_multi_balanced.pmtiles'}>
+	<VectorTileSource
+    url={'pmtiles://rnet_multi_balanced.pmtiles'} 
+    minzoom=13
+  >
 		<LineLayer
 			id="rnet"
 			paint={selectedLayer === 'Quietness'
