@@ -55,6 +55,16 @@
     dispatch('networkChange', { networkType });
   }
 
+  const lineOpacity = [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    8,
+    0.0,
+    11,
+    1
+  ];
+
 </script>
 
 <!-- <h1>CRUSE test map</h1> -->
@@ -126,17 +136,7 @@
 							'#000000'
 						],
 						'line-width': 2,
-            // 'line-opacity': 0.1
-            // Make opacity dependent on zoom level:
-            'line-opacity': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              10,
-              0.0,
-              11,
-              1
-            ]
+            'line-opacity': lineOpacity
 				  } : selectedLayer === 'Gradient' ? {
             'line-color': [
             'case',
@@ -150,7 +150,8 @@
             '#FF9800',
             '#000000'
         ],
-            'line-width': 2
+            'line-width': 2,
+            'line-opacity': lineOpacity
           }
 				: {
 						'line-color': [
@@ -162,7 +163,8 @@
 							1000,
 							'#006400'
 						],
-						'line-width': 2
+						'line-width': 2,
+            'line-opacity': lineOpacity
 				  }}
 			sourceLayer="rnet"
 			hoverCursor="pointer"
