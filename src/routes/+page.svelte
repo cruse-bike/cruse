@@ -125,7 +125,18 @@
 							'hsl(140, 75%, 27%)',
 							'#000000'
 						],
-						'line-width': 2
+						'line-width': 2,
+            // 'line-opacity': 0.1
+            // Make opacity dependent on zoom level:
+            'line-opacity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              10,
+              0.0,
+              11,
+              1
+            ]
 				  } : selectedLayer === 'Gradient' ? {
             'line-color': [
             'case',
