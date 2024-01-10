@@ -7,7 +7,9 @@
 		GeolocateControl,
 		NavigationControl,
 		FullscreenControl,
-		ScaleControl
+		ScaleControl,
+		GeoJSON,
+		FillLayer
 	} from 'svelte-maplibre';
 	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -90,8 +92,6 @@
 	<FullscreenControl position="top-right" />
 	<ScaleControl />
 
-	<!-- <VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}> -->
-
 	<VectorTileSource
     url={'pmtiles://rnet_multi_balanced.pmtiles'} 
     minzoom=13
@@ -156,6 +156,20 @@
 			</Popup>
 		</LineLayer>
 	</VectorTileSource>
+
+	<GeoJSON
+		id="counties"
+		data="counties.geojson"
+		>
+		<FillLayer
+			id="counties"
+			paint={{
+				'fill-color': '#888888',
+				'fill-opacity': 0.9
+			}}
+		/>
+	</GeoJSON>
+
 </MapLibre>
 
 <style>
