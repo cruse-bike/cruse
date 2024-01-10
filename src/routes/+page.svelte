@@ -1,5 +1,4 @@
 <script>
-	import { base } from '$app/paths';
 	import {
 		MapLibre,
 		VectorTileSource,
@@ -7,21 +6,13 @@
 		Popup,
 		GeolocateControl,
 		NavigationControl,
-		FullscreenControl
+		FullscreenControl,
+		ScaleControl
 	} from 'svelte-maplibre';
 	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
-	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
-
-	let layersVisibility = { rnet_limerick: true, another_layer: true }; // replace with your actual layers
-
-	function handleLayerChange(event) {
-		const { layer } = event.detail;
-		selectedLayer = layer; // Update selectedLayer when the layer changes
-		console.log('Selected layer:', selectedLayer); // Log the value of selectedLayer
-		console.log(layersVisibility);
-	}
-
 	import { createEventDispatcher } from 'svelte';
+
+	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 	const dispatch = createEventDispatcher();
 
 	let keyMap = {
@@ -48,13 +39,6 @@
   let networkType = 'balanced'; // Initialize networkType to 'balanced'
   const networkTypes = ['fastest', 'balanced', 'quietest']; // Define the network types
 
-  function changeNetworkType(newType) {
-    networkType = newType; // Update networkType
-
-    // Emit networkChange event
-    dispatch('networkChange', { networkType });
-  }
-
   const lineOpacity = [
     'interpolate',
     ['linear'],
@@ -67,8 +51,6 @@
 
 </script>
 
-<!-- <h1>CRUSE test map</h1> -->
-
 <div class="selector-container">
   <div class="layer-selector">
     <select bind:value={selectedKey} on:change={() => toggleLayer(selectedKey)}>
@@ -78,22 +60,16 @@
     </select>
   </div>
 
-  <!-- <div class="network-selector">
-    <select bind:value={networkType} on:change={() => changeNetworkType(networkType)}>
-      {#each networkTypes as type (type)}
-        <option value={type}>{type}</option>
-      {/each}
-    </select>
-  </div> -->
 </div>
 
 <MapLibre
 	{apiKey}
-  center={[-7.96, 53.42]}
+    center={[-7.96, 53.42]}
 	zoom={6}
 	class="map"
 	controlPosition="top-right"
 	style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+	on:zoomstart
 	let:map
 >
 	<GeocodingControl
@@ -112,6 +88,7 @@
 	<NavigationControl position="top-right" />
 	<GeolocateControl position="top-right" />
 	<FullscreenControl position="top-right" />
+	<ScaleControl />
 
 	<!-- <VectorTileSource url={'pmtiles://rnet_limerick.pmtiles'}> -->
 
@@ -180,8 +157,6 @@
 		</LineLayer>
 	</VectorTileSource>
 </MapLibre>
-
-<a href="{base}/about">About</a>
 
 <style>
 	:global(.map) {
