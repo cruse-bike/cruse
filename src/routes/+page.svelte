@@ -42,6 +42,8 @@
 	const networkTypes = ['fastest', 'balanced', 'quietest']; // Define the network types
 
 	const lineOpacity = ['interpolate', ['linear'], ['zoom'], 8, 0.0, 11, 1];
+	// fillOpacity that changes with zoom level and becomes visible when you zoom out:
+	const fillOpacity = ['interpolate', ['linear'], ['zoom'], 8, 0.8, 11, 0.0];
 </script>
 
 <div class="selector-container">
@@ -86,7 +88,7 @@
 		<FillLayer
 			paint={{
 				'fill-color': '#888888',
-				'fill-opacity': 0.9
+				'fill-opacity': fillOpacity
 			}}
 		/>
 	</GeoJSON>
