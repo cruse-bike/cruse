@@ -72,7 +72,7 @@
 			if (!e.detail?.center) return;
 			map.flyTo({
 				center: e.detail.center,
-				zoom: 10
+				zoom: 11
 			});
 		}}
 		class="geoCodeControl"
@@ -88,10 +88,14 @@
 		<FillLayer
 			paint={{
 				'fill-color': '#888888',
-				'fill-opacity': fillOpacity
+				'fill-opacity': fillOpacity,
+				'fill-opacity-transition': {
+					duration: 0 // Set the transition duration to 0 to make the layer disappear instantly
+				}
 			}}
+			filter={['<=', ['zoom'], 8]}
 		>
-			<Popup openOn="click" let:features>
+			<Popup openOn={'click'} let:features>
 				{@const props = features?.[0]?.properties}
 				{#each Object.entries(props) as [key, val]}
 					<p>
@@ -154,8 +158,9 @@
 						}}
 			sourceLayer="rnet"
 			hoverCursor="pointer"
+			filter={['>=', ['zoom'], 8]}
 		>
-			<Popup openOn="click" offset={[0, -10]} let:features>
+			<Popup openOn='click' offset={[0, -10]} let:features>
 				{@const props = features?.[0]?.properties}
 				{#each Object.entries(props) as [key, val]}
 					<p>
