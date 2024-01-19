@@ -90,15 +90,6 @@
 				'fill-color': '#888888',
 				'fill-opacity': fillOpacity
 			}}
-			<!--
-			Add
-			popup
-			with
-			link
-			to
-			county
-			name:
-			--
 		>
 			<Popup openOn="click" let:features>
 				{@const props = features?.[0]?.properties}
@@ -111,7 +102,7 @@
 		</FillLayer>
 	</GeoJSON>
 
-	<!-- <VectorTileSource url={'pmtiles://rnet_multi_balanced.pmtiles'} minzoom="13">
+	<VectorTileSource url={'pmtiles://rnet_multi_balanced.pmtiles'} minzoom="13">
 		<LineLayer
 			id="rnet"
 			paint={selectedLayer === 'Quietness'
@@ -173,7 +164,7 @@
 				{/each}
 			</Popup>
 		</LineLayer>
-	</VectorTileSource> -->
+	</VectorTileSource>
 </MapLibre>
 
 <style>
