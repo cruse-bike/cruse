@@ -17,9 +17,18 @@
 	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 	const dispatch = createEventDispatcher();
 
-	let keyMap = {
+	// Scenario layer key map
+	let scenarioKeyMap = {
 		Baseline: 'Bicycle (Baseline)',
 		'Near market': 'Bicycle (Near market)',
+		'Climate Action Plan': 'Bicycle (Climate Action Plan)',
+		'Go Dutch': 'Bicycle (Go Dutch)',
+		Ebike: 'Bicycle (Ebike)'
+	};
+
+	let keyMap = {
+		Baseline: 'Bicycle (Baseline)',
+		'Near Market': 'Bicycle (Near market)',
 		'Climate Action Plan': 'Bicycle (Climate Action Plan)',
 		'Go Dutch': 'Bicycle (Go Dutch)',
 		Ebike: 'Bicycle (Ebike)',
@@ -27,7 +36,7 @@
 		Quietness: 'Quietness'
 	};
 
-	let selectedKey = 'Quietness'; // Initialize selectedKey to 'Go Dutch'
+	let selectedKey = 'Go Dutch'; // Initialize selectedKey to 'Go Dutch'
 	let selectedLayer = keyMap[selectedKey]; // Initialize selectedLayer to the corresponding value in keyMap
 
 	function toggleLayer(layerKey) {
@@ -37,6 +46,20 @@
 		// Emit layerChange event
 		dispatch('layerChange', { layer: selectedLayer });
 	}
+
+	let palette = [
+		'#d73027',
+		'#f46d43',
+		'#fdae61',
+		'#fee090',
+		'#ffffbf',
+		'#e0f3f8',
+		'#abd9e9',
+		'#74add1',
+		'#4575b4'
+	];
+	let greyNullValue = '#d9d9d9';
+	let breaks = [0, 1, 2, 3, 5, 10, 20, 30, 100];
 
 	let networkType = 'balanced'; // Initialize networkType to 'balanced'
 	const networkTypes = ['fastest', 'balanced', 'quietest']; // Define the network types
@@ -52,7 +75,6 @@
 		// Emit networkTypeChange event
 		dispatch('networkTypeChange', { networkType });
 	}
-
 </script>
 
 <div class="selector-container">
@@ -93,15 +115,37 @@
 	<FullscreenControl position="top-right" />
 	<ScaleControl />
 
-
 	<GeoJSON id="counties" data="counties.geojson">
 		<FillLayer
 			paint={{
-				'fill-color': '#888888',
+				'fill-color': [
+					'case',
+					['<=', ['to-number', ['get', selectedKey]], breaks[0]],
+					greyNullValue, // Shifted down by a notch
+					['<=', ['to-number', ['get', selectedKey]], breaks[1]],
+					palette[1], // Shifted down by a notch
+					['<=', ['to-number', ['get', selectedKey]], breaks[2]],
+					palette[2], // Shifted down by a notch
+					['<=', ['to-number', ['get', selectedKey]], breaks[3]],
+					palette[3], // Shifted down by a notch
+					['<=', ['to-number', ['get', selectedKey]], breaks[4]],
+					palette[4], // Shifted down by a notch
+					['<=', ['to-number', ['get', selectedKey]], breaks[5]],
+					palette[5], // Shifted down by a notch
+					['<=', ['to-number', ['get', selectedKey]], breaks[6]],
+					palette[6], // Shifted down by a notch
+					['<=', ['to-number', ['get', selectedKey]], breaks[7]],
+					palette[7], // Shifted down by a notch
+					['<=', ['to-number', ['get', selectedKey]], breaks[8]],
+					palette[8], // Shifted down by a notch
+					greyNullValue
+				],
 				'fill-opacity': fillOpacity,
 				'fill-opacity-transition': {
 					duration: 0 // Set the transition duration to 0 to make the layer disappear instantly
-				}
+				},
+				// Add a border around the counties:
+				'fill-outline-color': '#000000'
 			}}
 			filter={['<=', ['zoom'], 8]}
 		>
@@ -170,7 +214,7 @@
 			hoverCursor="pointer"
 			filter={['>=', ['zoom'], 8]}
 		>
-			<Popup openOn='click' offset={[0, -10]} let:features>
+			<Popup openOn="click" offset={[0, -10]} let:features>
 				{@const props = features?.[0]?.properties}
 				{#each Object.entries(props) as [key, val]}
 					<p>
