@@ -44,6 +44,15 @@
 	const lineOpacity = ['interpolate', ['linear'], ['zoom'], 8, 0.0, 11, 1];
 	// fillOpacity that changes with zoom level and becomes visible when you zoom out:
 	const fillOpacity = ['interpolate', ['linear'], ['zoom'], 8, 0.8, 11, 0.0];
+
+	function toggleNetworkType() {
+		// Update networkType
+		networkType = networkTypes[(networkTypes.indexOf(networkType) + 1) % networkTypes.length];
+
+		// Emit networkTypeChange event
+		dispatch('networkTypeChange', { networkType });
+	}
+
 </script>
 
 <div class="selector-container">
@@ -83,6 +92,7 @@
 	<GeolocateControl position="top-right" />
 	<FullscreenControl position="top-right" />
 	<ScaleControl />
+
 
 	<GeoJSON id="counties" data="counties.geojson">
 		<FillLayer
