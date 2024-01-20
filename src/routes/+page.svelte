@@ -70,7 +70,21 @@
 				return { color, label };
 			});
 		} else {
-			legend = [];
+			if (selectedLayer === 'Gradient') {
+				legend = [
+					{ color: selectedLayer === 'Quietness' ? 'hsl(330, 60%, 33%)' : '#8BC34A', label: breakLabels[0] },
+					{ color: selectedLayer === 'Quietness' ? '#cc6677' : '#CDDC39', label: breakLabels[1] },
+					{ color: selectedLayer === 'Quietness' ? '#44ab9a' : '#FFA500', label: breakLabels[2] },
+					{ color: selectedLayer === 'Quietness' ? 'hsl(140, 75%, 27%)' : '#FF9800', label: breakLabels[3] }
+				];
+			} else {
+				legend = [
+					{ color: 'hsl(330, 60%, 33%)', label: '<= 25' },
+					{ color: '#cc6677', label: '26 - 50' },
+					{ color: '#44ab9a', label: '51 - 75' },
+					{ color: 'hsl(140, 75%, 27%)', label: '>= 76' }
+				];
+			}
 		}
 	}
 
