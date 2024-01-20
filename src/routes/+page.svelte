@@ -134,23 +134,23 @@
 				'fill-color': [
 					'case',
 					['<=', ['to-number', ['get', selectedKey]], breaks[0]],
-					greyNullValue, // Shifted down by a notch
+					greyNullValue,
 					['<=', ['to-number', ['get', selectedKey]], breaks[1]],
-					palette[0], // Shifted down by a notch
+					palette[0],
 					['<=', ['to-number', ['get', selectedKey]], breaks[2]],
-					palette[1], // Shifted down by a notch
+					palette[1],
 					['<=', ['to-number', ['get', selectedKey]], breaks[3]],
-					palette[2], // Shifted down by a notch
+					palette[2],
 					['<=', ['to-number', ['get', selectedKey]], breaks[4]],
-					palette[3], // Shifted down by a notch
+					palette[3],
 					['<=', ['to-number', ['get', selectedKey]], breaks[5]],
-					palette[4], // Shifted down by a notch
+					palette[4],
 					['<=', ['to-number', ['get', selectedKey]], breaks[6]],
-					palette[5], // Shifted down by a notch
+					palette[5],
 					['<=', ['to-number', ['get', selectedKey]], breaks[7]],
-					palette[6], // Shifted down by a notch
+					palette[6],
 					['<=', ['to-number', ['get', selectedKey]], breaks[8]],
-					palette[7], // Shifted down by a notch
+					palette[7],
 					greyNullValue
 				],
 				'fill-opacity': fillOpacity,
@@ -165,9 +165,17 @@
 			<Popup openOn={'click'} let:features>
 				{@const props = features?.[0]?.properties}
 				{#each Object.entries(props) as [key, val]}
-					<p>
-						<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
-					</p>
+					{#if key === 'Name'}
+						<p>
+							<a href={`${val.toLowerCase()}/`} target="_blank" rel="noopener noreferrer">
+								<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
+							</a>
+						</p>
+					{:else}
+						<p>
+							<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
+						</p>
+					{/if}
 				{/each}
 			</Popup>
 		</FillLayer>
