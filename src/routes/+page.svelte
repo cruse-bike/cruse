@@ -61,6 +61,38 @@
 	let greyNullValue = '#d9d9d9';
 	let breaks = [0, 1, 2, 3, 5, 10, 20, 30, 100];
 
+	let legend = [];
+	$: {
+		if (selectedLayer === 'Bicycle (Baseline)') {
+			legend = [
+				{ color: '#d73027', label: 'Baseline' },
+				// ... more legend items for Bicycle (Baseline) ...
+			];
+		} else if (selectedLayer === 'Bicycle (Near market)') {
+			legend = [
+				{ color: '#f46d43', label: 'Near Market' },
+				// ... more legend items for Bicycle (Near market) ...
+			];
+		} else if (selectedLayer === 'Bicycle (Climate Action Plan)') {
+			legend = [
+				{ color: '#fdae61', label: 'Climate Action Plan' },
+				// ... more legend items for Bicycle (Climate Action Plan) ...
+			];
+		} else if (selectedLayer === 'Bicycle (Go Dutch)') {
+			legend = [
+				{ color: '#fee090', label: 'Go Dutch' },
+				// ... more legend items for Bicycle (Go Dutch) ...
+			];
+		} else if (selectedLayer === 'Bicycle (Ebike)') {
+			legend = [
+				{ color: '#ffffbf', label: 'Ebike' },
+				// ... more legend items for Bicycle (Ebike) ...
+			];
+		} else {
+			legend = [];
+		}
+	}
+
 	let networkType = 'balanced'; // Initialize networkType to 'balanced'
 	const networkTypes = ['fastest', 'balanced', 'quietest']; // Define the network types
 
@@ -224,6 +256,21 @@
 			</Popup>
 		</LineLayer>
 	</VectorTileSource>
+
+	<div
+	class="legend"
+	style="position: absolute; bottom: 15; left: 0; background: white; padding: 10px;"
+  >
+	{#each legend as item (item.label)}
+	  <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 5px;">
+		<div
+		  class="legend-color"
+		  style="width: 20px; height: 20px; background-color: {item.color}; margin-right: 5px;"
+		></div>
+		<div class="legend-label">{item.label}</div>
+	  </div>
+	{/each}
+  </div>
 </MapLibre>
 
 <style>
