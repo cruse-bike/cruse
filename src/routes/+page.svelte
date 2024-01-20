@@ -61,16 +61,19 @@
 	let greyNullValue = '#d9d9d9';
 	let breaks = [0, 1, 2, 3, 5, 10, 20, 30, 100];
 	let breakLabels = ['0-1%', '1-2%', '2-3%', '3-5%', '5-10%', '10-20%', '20-30%', '30-100%'];
+	let legendTitle = '';
 
 	let legend = [];
 	$: {
 		if (selectedLayer === 'Bicycle (Baseline)' || selectedLayer === 'Bicycle (Near market)' || selectedLayer === 'Bicycle (Climate Action Plan)' || selectedLayer === 'Bicycle (Go Dutch)' || selectedLayer === 'Bicycle (Ebike)') {
+			legendTitle = '% trips by cycling<br>Scenario: ' + selectedKey;
 			legend = palette.map((color, index) => {
 				const label = breakLabels[index];
 				return { color, label };
 			});
 		} else {
 			if (selectedLayer === 'Gradient') {
+				legendTitle = '% Gradient<br>Zoom in to see network';
 				legend = [
 					{ color: selectedLayer === 'Quietness' ? 'hsl(330, 60%, 33%)' : '#8BC34A', label: breakLabels[0] },
 					{ color: selectedLayer === 'Quietness' ? '#cc6677' : '#CDDC39', label: breakLabels[1] },
@@ -78,6 +81,7 @@
 					{ color: selectedLayer === 'Quietness' ? 'hsl(140, 75%, 27%)' : '#FF9800', label: breakLabels[3] }
 				];
 			} else {
+				legendTitle = `Quietness<br>100 is most cyclable<br>Zoom in to see network`;
 				legend = [
 					{ color: 'hsl(330, 60%, 33%)', label: '<= 25' },
 					{ color: '#cc6677', label: '26 - 50' },
@@ -103,16 +107,6 @@
 		dispatch('networkTypeChange', { networkType });
 	}
 </script>
-
-<div class="selector-container">
-	<div class="layer-selector">
-		<select bind:value={selectedKey} on:change={() => toggleLayer(selectedKey)}>
-			{#each Object.keys(keyMap) as displayName (displayName)}
-				<option value={displayName}>{displayName}</option>
-			{/each}
-		</select>
-	</div>
-</div>
 
 <MapLibre
 	{apiKey}
@@ -260,10 +254,24 @@
 		</LineLayer>
 	</VectorTileSource>
 
-	<div
-	class="legend"
-	style="position: absolute; bottom: 15; left: 0; background: white; padding: 10px;"
-  >
+		<div
+		class="legend"
+		style="position: absolute; bottom: 15; left: 15px; background: white; padding: 10px;"
+	  >
+
+	  <p style="font-weight: bold; margin-bottom: 5px;">Show layer:</p>		
+	  
+	  <div class="selector-container" style="padding: 5px;">
+		<div class="layer-selector">
+			<select bind:value={selectedKey} on:change={() => toggleLayer(selectedKey)}>
+				{#each Object.keys(keyMap) as displayName (displayName)}
+					<option value={displayName}>{displayName}</option>
+				{/each}
+			</select>
+		</div>
+	</div>
+
+	<div class="legend-title" style="font-weight: bold; margin-bottom: 10px;">{@html legendTitle}</div>
 	{#each legend as item (item.label)}
 	  <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 5px;">
 		<div
