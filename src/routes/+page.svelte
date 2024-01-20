@@ -56,38 +56,19 @@
 		'#e0f3f8',
 		'#abd9e9',
 		'#74add1',
-		'#4575b4'
+		'#d9d9d9'
 	];
 	let greyNullValue = '#d9d9d9';
 	let breaks = [0, 1, 2, 3, 5, 10, 20, 30, 100];
+	let breakLabels = ['0-1%', '1-2%', '2-3%', '3-5%', '5-10%', '10-20%', '20-30%', '30-100%'];
 
 	let legend = [];
 	$: {
-		if (selectedLayer === 'Bicycle (Baseline)') {
-			legend = [
-				{ color: '#d73027', label: 'Baseline' },
-				// ... more legend items for Bicycle (Baseline) ...
-			];
-		} else if (selectedLayer === 'Bicycle (Near market)') {
-			legend = [
-				{ color: '#f46d43', label: 'Near Market' },
-				// ... more legend items for Bicycle (Near market) ...
-			];
-		} else if (selectedLayer === 'Bicycle (Climate Action Plan)') {
-			legend = [
-				{ color: '#fdae61', label: 'Climate Action Plan' },
-				// ... more legend items for Bicycle (Climate Action Plan) ...
-			];
-		} else if (selectedLayer === 'Bicycle (Go Dutch)') {
-			legend = [
-				{ color: '#fee090', label: 'Go Dutch' },
-				// ... more legend items for Bicycle (Go Dutch) ...
-			];
-		} else if (selectedLayer === 'Bicycle (Ebike)') {
-			legend = [
-				{ color: '#ffffbf', label: 'Ebike' },
-				// ... more legend items for Bicycle (Ebike) ...
-			];
+		if (selectedLayer === 'Bicycle (Baseline)' || selectedLayer === 'Bicycle (Near market)' || selectedLayer === 'Bicycle (Climate Action Plan)' || selectedLayer === 'Bicycle (Go Dutch)' || selectedLayer === 'Bicycle (Ebike)') {
+			legend = palette.map((color, index) => {
+				const label = breakLabels[index];
+				return { color, label };
+			});
 		} else {
 			legend = [];
 		}
@@ -155,21 +136,21 @@
 					['<=', ['to-number', ['get', selectedKey]], breaks[0]],
 					greyNullValue, // Shifted down by a notch
 					['<=', ['to-number', ['get', selectedKey]], breaks[1]],
-					palette[1], // Shifted down by a notch
+					palette[0], // Shifted down by a notch
 					['<=', ['to-number', ['get', selectedKey]], breaks[2]],
-					palette[2], // Shifted down by a notch
+					palette[1], // Shifted down by a notch
 					['<=', ['to-number', ['get', selectedKey]], breaks[3]],
-					palette[3], // Shifted down by a notch
+					palette[2], // Shifted down by a notch
 					['<=', ['to-number', ['get', selectedKey]], breaks[4]],
-					palette[4], // Shifted down by a notch
+					palette[3], // Shifted down by a notch
 					['<=', ['to-number', ['get', selectedKey]], breaks[5]],
-					palette[5], // Shifted down by a notch
+					palette[4], // Shifted down by a notch
 					['<=', ['to-number', ['get', selectedKey]], breaks[6]],
-					palette[6], // Shifted down by a notch
+					palette[5], // Shifted down by a notch
 					['<=', ['to-number', ['get', selectedKey]], breaks[7]],
-					palette[7], // Shifted down by a notch
+					palette[6], // Shifted down by a notch
 					['<=', ['to-number', ['get', selectedKey]], breaks[8]],
-					palette[8], // Shifted down by a notch
+					palette[7], // Shifted down by a notch
 					greyNullValue
 				],
 				'fill-opacity': fillOpacity,
