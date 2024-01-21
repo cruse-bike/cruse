@@ -83,10 +83,10 @@
 			} else {
 				legendTitle = `Quietness<br>100 is most cyclable<br>Zoom in to see network`;
 				legend = [
-					{ color: 'hsl(330, 60%, 33%)', label: '<= 25' },
-					{ color: '#cc6677', label: '26 - 50' },
-					{ color: '#44ab9a', label: '51 - 75' },
-					{ color: 'hsl(140, 75%, 27%)', label: '>= 76' }
+					{ color: 'hsl(330, 60%, 33%)', label: '<= 24' },
+					{ color: '#cc6677', label: '25 - 49' },
+					{ color: '#44ab9a', label: '50 - 74' },
+					{ color: 'hsl(140, 75%, 27%)', label: '>= 75' }
 				];
 			}
 		}
@@ -196,11 +196,11 @@
 				? {
 						'line-color': [
 							'case',
-							['<=', ['to-number', ['get', 'Quietness']], 25],
+							['<=', ['to-number', ['get', 'Quietness']], 24],
 							'hsl(330, 60%, 33%)',
-							['<=', ['to-number', ['get', 'Quietness']], 50],
+							['<=', ['to-number', ['get', 'Quietness']], 49],
 							'#cc6677',
-							['<=', ['to-number', ['get', 'Quietness']], 75],
+							['<=', ['to-number', ['get', 'Quietness']], 74],
 							'#44ab9a',
 							['>=', ['to-number', ['get', 'Quietness']], 75],
 							'hsl(140, 75%, 27%)',
