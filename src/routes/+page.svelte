@@ -175,7 +175,7 @@
 				{#each Object.entries(props) as [key, val]}
 					{#if key === 'Name'}
 						<p>
-							<a href={`${val.toLowerCase()}/`} target="_blank" rel="noopener noreferrer">
+							<a href={`../${val.toLowerCase()}/`} target="_blank" rel="noopener noreferrer">
 								<span class="popUpKey">{key}</span> : <span class="popUpVal">{val}</span>
 							</a>
 						</p>
