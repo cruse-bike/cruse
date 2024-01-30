@@ -61,6 +61,7 @@
 	let greyNullValue = '#d9d9d9';
 	let breaks = [0, 1, 2, 3, 5, 10, 20, 30, 100];
 	let breakLabels = ['0-1%', '1-2%', '2-3%', '3-5%', '5-10%', '10-20%', '20-30%', '30+%'];
+	let gradientBreakLabels = ['0-2%', '2-4%', '4-7%', '7+%'];
 	let legendTitle = '';
 
 	let legend = [];
@@ -75,10 +76,10 @@
 			if (selectedLayer === 'Gradient') {
 				legendTitle = '% Gradient<br>Zoom in to see network';
 				legend = [
-					{ color: selectedLayer === 'Quietness' ? 'hsl(330, 60%, 33%)' : '#8BC34A', label: breakLabels[0] },
-					{ color: selectedLayer === 'Quietness' ? '#cc6677' : '#CDDC39', label: breakLabels[1] },
-					{ color: selectedLayer === 'Quietness' ? '#44ab9a' : '#FFA500', label: breakLabels[2] },
-					{ color: selectedLayer === 'Quietness' ? 'hsl(140, 75%, 27%)' : '#FF9800', label: breakLabels[3] }
+					{ color: selectedLayer === 'Quietness' ? 'hsl(330, 60%, 33%)' : '#8BC34A', label: gradientBreakLabels[0] },
+					{ color: selectedLayer === 'Quietness' ? '#cc6677' : '#CDDC39', label: gradientBreakLabels[1] },
+					{ color: selectedLayer === 'Quietness' ? '#44ab9a' : '#FFA500', label: gradientBreakLabels[2] },
+					{ color: selectedLayer === 'Quietness' ? 'hsl(140, 75%, 27%)' : '#B22222', label: gradientBreakLabels[3] }
 				];
 			} else {
 				legendTitle = `Quietness<br>100 is most cyclable<br>Zoom in to see network`;
@@ -211,21 +212,21 @@
 					}
 				: selectedLayer === 'Gradient'
 					? {
-							'line-color': [
-								'case',
-								['<=', ['to-number', ['get', 'Gradient']], 1],
-								'#8BC34A', // Light Green
-								['<=', ['to-number', ['get', 'Gradient']], 3],
-								'#CDDC39', // Lime
-								['<=', ['to-number', ['get', 'Gradient']], 20],
-								'#FFA500', // Lighter Orange
-								['>=', ['to-number', ['get', 'Gradient']], 20],
-								'#FF9800',
-								'#000000'
-							],
-							'line-width': 2,
-							'line-opacity': lineOpacity
-						}
+								'line-color': [
+									'case',
+									['<=', ['to-number', ['get', 'Gradient']], 2],
+									'#8BC34A', // Light Green
+									['<=', ['to-number', ['get', 'Gradient']], 4],
+									'#CDDC39', // Lime
+									['<=', ['to-number', ['get', 'Gradient']], 7],
+									'#FFA500', // Lighter Orange
+									['>=', ['to-number', ['get', 'Gradient']], 7],
+									'#B22222', // Fire Brick
+									'#000000'
+								],
+								'line-width': 2,
+								'line-opacity': lineOpacity
+							}
 					: {
 							'line-color': [
 								'interpolate',
