@@ -107,6 +107,11 @@
 		// Emit networkTypeChange event
 		dispatch('networkTypeChange', { networkType });
 	}
+
+	// Function to get current zoom level
+	function getZoomLevel(map) {
+		return map.getZoom();
+	}
 </script>
 
 <MapLibre
@@ -260,7 +265,9 @@
 		style="position: absolute; bottom: 15; left: 15px; background: white; padding: 10px;"
 	  >
 
-	  <p style="font-weight: bold; margin-bottom: 5px;">Show layer:</p>		
+	  <p style="font-weight: bold; margin-bottom: 5px;">Show layer:</p>
+	  <p style="margin-bottom: 5px;">{networkType}</p>
+	  <p style="margin-bottom: 5px;">Zoom level: {getZoomLevel(map)}</p>	
 	  
 	  <div class="selector-container" style="padding: 5px;">
 		<div class="layer-selector">
