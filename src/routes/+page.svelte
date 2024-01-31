@@ -12,19 +12,10 @@
 		FillLayer
 	} from 'svelte-maplibre';
 	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 	const dispatch = createEventDispatcher();
-
-	// Scenario layer key map
-	let scenarioKeyMap = {
-		Baseline: 'Bicycle (Baseline)',
-		'Near market': 'Bicycle (Near market)',
-		'Climate Action Plan': 'Bicycle (Climate Action Plan)',
-		'Go Dutch': 'Bicycle (Go Dutch)',
-		Ebike: 'Bicycle (Ebike)'
-	};
 
 	let keyMap = {
 		Baseline: 'Bicycle (Baseline)',
@@ -62,24 +53,89 @@
 	let breaks = [0, 1, 2, 3, 5, 10, 20, 30, 100];
 	let breakLabels = ['0-1%', '1-2%', '2-3%', '3-5%', '5-10%', '10-20%', '20-30%', '30+%'];
 	let gradientBreakLabels = ['0-2%', '2-4%', '4-7%', '7+%'];
+
+	function interpolateColor(color1, color2, factor) {
+		const r1 = parseInt(color1.substring(1, 3), 16);
+		const g1 = parseInt(color1.substring(3, 5), 16);
+		const b1 = parseInt(color1.substring(5, 7), 16);
+
+		const r2 = parseInt(color2.substring(1, 3), 16);
+		const g2 = parseInt(color2.substring(3, 5), 16);
+		const b2 = parseInt(color2.substring(5, 7), 16);
+
+		const r = Math.round(r1 + factor * (r2 - r1));
+		const g = Math.round(g1 + factor * (g2 - g1));
+		const b = Math.round(b1 + factor * (b2 - b1));
+
+		return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+	}
+
+	const color1 = '#ADD8E6';
+	const color2 = '#006400';
+
+	const colors = [
+		interpolateColor(color1, color2, 0.25),
+		interpolateColor(color1, color2, 0.5),
+		interpolateColor(color1, color2, 0.75)
+	];
+
+	let networkColors = [
+		color1, // Light Blue
+		colors[0], //
+		colors[1], //
+		colors[2], //
+		color2 //
+	];
+
+	let zoom = 6;
+	bind: zoom;
 	let legendTitle = '';
 
 	let legend = [];
 	$: {
-		if (selectedLayer === 'Bicycle (Baseline)' || selectedLayer === 'Bicycle (Near market)' || selectedLayer === 'Bicycle (Climate Action Plan)' || selectedLayer === 'Bicycle (Go Dutch)' || selectedLayer === 'Bicycle (Ebike)') {
-			legendTitle = '% trips by cycling<br>Scenario: ' + selectedKey;
-			legend = palette.map((color, index) => {
-				const label = breakLabels[index];
-				return { color, label };
-			});
+		if (
+			selectedLayer === 'Bicycle (Baseline)' ||
+			selectedLayer === 'Bicycle (Near market)' ||
+			selectedLayer === 'Bicycle (Climate Action Plan)' ||
+			selectedLayer === 'Bicycle (Go Dutch)' ||
+			selectedLayer === 'Bicycle (Ebike)'
+		) {
+			if (zoom < 8.9) {
+				legendTitle = '% trips by cycling<br>Scenario: ' + selectedKey;
+				legend = palette.map((color, index) => {
+					const label = breakLabels[index];
+					return { color, label };
+				});
+			} else {
+				legendTitle = 'Cycle flow (trips per day)<br>Scenario: ' + selectedKey;
+				legend = [
+					{ color: color1, label: '<= 10' },
+					{ color: networkColors[1], label: '10 - 100' },
+					{ color: networkColors[2], label: '100 - 500' },
+					{ color: networkColors[3], label: '500 - 1000' },
+					{ color: color2, label: '>= 1000' }
+				];
+			}
 		} else {
 			if (selectedLayer === 'Gradient') {
 				legendTitle = '% Gradient<br>Zoom in to see network';
 				legend = [
-					{ color: selectedLayer === 'Quietness' ? 'hsl(330, 60%, 33%)' : '#8BC34A', label: gradientBreakLabels[0] },
-					{ color: selectedLayer === 'Quietness' ? '#cc6677' : '#CDDC39', label: gradientBreakLabels[1] },
-					{ color: selectedLayer === 'Quietness' ? '#44ab9a' : '#FFA500', label: gradientBreakLabels[2] },
-					{ color: selectedLayer === 'Quietness' ? 'hsl(140, 75%, 27%)' : '#B22222', label: gradientBreakLabels[3] }
+					{
+						color: selectedLayer === 'Quietness' ? 'hsl(330, 60%, 33%)' : '#8BC34A',
+						label: gradientBreakLabels[0]
+					},
+					{
+						color: selectedLayer === 'Quietness' ? '#cc6677' : '#CDDC39',
+						label: gradientBreakLabels[1]
+					},
+					{
+						color: selectedLayer === 'Quietness' ? '#44ab9a' : '#FFA500',
+						label: gradientBreakLabels[2]
+					},
+					{
+						color: selectedLayer === 'Quietness' ? 'hsl(140, 75%, 27%)' : '#B22222',
+						label: gradientBreakLabels[3]
+					}
 				];
 			} else {
 				legendTitle = `Quietness<br>100 is most cyclable<br>Zoom in to see network`;
@@ -93,26 +149,16 @@
 		}
 	}
 
-	let networkType = 'balanced'; // Initialize networkType to 'balanced'
-	const networkTypes = ['fastest', 'balanced', 'quietest']; // Define the network types
-
 	const lineOpacity = ['interpolate', ['linear'], ['zoom'], 8, 0.0, 11, 1];
 	// fillOpacity that changes with zoom level and becomes visible when you zoom out:
 	const fillOpacity = ['interpolate', ['linear'], ['zoom'], 8, 0.8, 11, 0.0];
 
-	function toggleNetworkType() {
-		// Update networkType
-		networkType = networkTypes[(networkTypes.indexOf(networkType) + 1) % networkTypes.length];
-
-		// Emit networkTypeChange event
-		dispatch('networkTypeChange', { networkType });
-	}
 </script>
 
 <MapLibre
 	{apiKey}
 	center={[-7.96, 53.42]}
-	zoom={6}
+	bind:zoom
 	class="map"
 	controlPosition="top-right"
 	style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
@@ -212,30 +258,30 @@
 					}
 				: selectedLayer === 'Gradient'
 					? {
-								'line-color': [
-									'case',
-									['<=', ['to-number', ['get', 'Gradient']], 2],
-									'#8BC34A', // Light Green
-									['<=', ['to-number', ['get', 'Gradient']], 4],
-									'#CDDC39', // Lime
-									['<=', ['to-number', ['get', 'Gradient']], 7],
-									'#FFA500', // Lighter Orange
-									['>=', ['to-number', ['get', 'Gradient']], 7],
-									'#B22222', // Fire Brick
-									'#000000'
-								],
-								'line-width': 2,
-								'line-opacity': lineOpacity
-							}
+							'line-color': [
+								'case',
+								['<=', ['to-number', ['get', 'Gradient']], 2],
+								'#8BC34A', // Light Green
+								['<=', ['to-number', ['get', 'Gradient']], 4],
+								'#CDDC39', // Lime
+								['<=', ['to-number', ['get', 'Gradient']], 7],
+								'#FFA500', // Lighter Orange
+								['>=', ['to-number', ['get', 'Gradient']], 7],
+								'#B22222', // Fire Brick
+								'#000000'
+							],
+							'line-width': 2,
+							'line-opacity': lineOpacity
+						}
 					: {
 							'line-color': [
 								'interpolate',
 								['linear'],
 								['get', selectedLayer],
 								10,
-								'#ADD8E6',
+								color1,
 								1000,
-								'#006400'
+								color2
 							],
 							'line-width': 2,
 							'line-opacity': lineOpacity
@@ -255,34 +301,37 @@
 		</LineLayer>
 	</VectorTileSource>
 
-		<div
+	<div
 		class="legend"
 		style="position: absolute; bottom: 15; left: 15px; background: white; padding: 10px;"
-	  >
+	>
+		<p style="font-weight: bold; margin-bottom: 5px;">Show layer:</p>
+		<!-- <p style="margin-bottom: 5px;">{networkType}</p>
+		<p style="margin-bottom: 5px;">Zoom level: {zoom}</p> -->
 
-	  <p style="font-weight: bold; margin-bottom: 5px;">Show layer:</p>		
-	  
-	  <div class="selector-container" style="padding: 5px;">
-		<div class="layer-selector">
-			<select bind:value={selectedKey} on:change={() => toggleLayer(selectedKey)}>
-				{#each Object.keys(keyMap) as displayName (displayName)}
-					<option value={displayName}>{displayName}</option>
-				{/each}
-			</select>
+		<div class="selector-container" style="padding: 5px;">
+			<div class="layer-selector">
+				<select bind:value={selectedKey} on:change={() => toggleLayer(selectedKey)}>
+					{#each Object.keys(keyMap) as displayName (displayName)}
+						<option value={displayName}>{displayName}</option>
+					{/each}
+				</select>
+			</div>
 		</div>
-	</div>
 
-	<div class="legend-title" style="font-weight: bold; margin-bottom: 10px;">{@html legendTitle}</div>
-	{#each legend as item (item.label)}
-	  <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 5px;">
-		<div
-		  class="legend-color"
-		  style="width: 20px; height: 20px; background-color: {item.color}; margin-right: 5px;"
-		></div>
-		<div class="legend-label">{item.label}</div>
-	  </div>
-	{/each}
-  </div>
+		<div class="legend-title" style="font-weight: bold; margin-bottom: 10px;">
+			{@html legendTitle}
+		</div>
+		{#each legend as item (item.label)}
+			<div class="legend-item" style="display: flex; align-items: center; margin-bottom: 5px;">
+				<div
+					class="legend-color"
+					style="width: 20px; height: 20px; background-color: {item.color}; margin-right: 5px;"
+				></div>
+				<div class="legend-label">{item.label}</div>
+			</div>
+		{/each}
+	</div>
 </MapLibre>
 
 <style>
