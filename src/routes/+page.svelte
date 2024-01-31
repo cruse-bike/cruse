@@ -12,19 +12,10 @@
 		FillLayer
 	} from 'svelte-maplibre';
 	import GeocodingControl from '@maptiler/geocoding-control/svelte/GeocodingControl.svelte';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	const apiKey = 'EU1qfgGypy2AfZTKCG6c';
 	const dispatch = createEventDispatcher();
-
-	// Scenario layer key map
-	let scenarioKeyMap = {
-		Baseline: 'Bicycle (Baseline)',
-		'Near market': 'Bicycle (Near market)',
-		'Climate Action Plan': 'Bicycle (Climate Action Plan)',
-		'Go Dutch': 'Bicycle (Go Dutch)',
-		Ebike: 'Bicycle (Ebike)'
-	};
 
 	let keyMap = {
 		Baseline: 'Bicycle (Baseline)',
@@ -158,25 +149,10 @@
 		}
 	}
 
-	let networkType = 'balanced'; // Initialize networkType to 'balanced'
-	const networkTypes = ['fastest', 'balanced', 'quietest']; // Define the network types
-
 	const lineOpacity = ['interpolate', ['linear'], ['zoom'], 8, 0.0, 11, 1];
 	// fillOpacity that changes with zoom level and becomes visible when you zoom out:
 	const fillOpacity = ['interpolate', ['linear'], ['zoom'], 8, 0.8, 11, 0.0];
 
-	function toggleNetworkType() {
-		// Update networkType
-		networkType = networkTypes[(networkTypes.indexOf(networkType) + 1) % networkTypes.length];
-
-		// Emit networkTypeChange event
-		dispatch('networkTypeChange', { networkType });
-	}
-
-	// Function to get current zoom level
-	function getZoomLevel(map) {
-		return map.getZoom();
-	}
 </script>
 
 <MapLibre
